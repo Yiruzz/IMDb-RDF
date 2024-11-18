@@ -1,7 +1,7 @@
 from rdflib import Graph, URIRef, Literal, Namespace
 
 g = Graph()
-g.parse('output1.ttl', format='turtle')
+g.parse('rdf_movies.ttl', format='turtle')
 
 # Define namespaces
 EX = Namespace("http://example.org/movies#")
@@ -40,18 +40,18 @@ for nodo_pelicula , _ , _ in peliculas:
     movie_node = URIRef(nodo_pelicula)
 
     # Obtenemos los géneros de la película
-    stars = list(g.objects(movie_node, EX["star"]))
+    stars = list(g.objects(movie_node, EX["stars"]))
     if stars:
         # Las estrellas estarán separadas por coma
         star_str = stars[0]
         stars_list = star_str.split(',')
 
         # Eliminar el género actual del TTL
-        g.remove((movie_node, EX.genre, Literal(star_str)))
+        g.remove((movie_node, EX.stars, Literal(star_str)))
 
         # Añadir los géneros individualmente
         for star in stars_list:
-            g.add((movie_node, EX.genre, URIRef(EX[star.strip()])))
+            g.add((movie_node, EX.star, Literal(star.strip())))
 
 # Guardar el archivo actualizado
 g.serialize('cleaned_imdb.ttl', format='turtle')
