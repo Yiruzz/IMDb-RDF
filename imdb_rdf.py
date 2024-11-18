@@ -2,6 +2,8 @@ from rdflib import Graph, URIRef, Literal, Namespace
 from wikidata_sparql_movies import search_movie_on_wikidata
 import time
 
+start_time = time.time()
+
 g = Graph()
 g.parse('cleaned_imdb.ttl', format='turtle')
 
@@ -19,8 +21,19 @@ SELECT ?pelicula ?titulo ?anio WHERE {
 
 peliculas = [(str(row.pelicula), str(row.titulo), str(row.anio)) for row in g.query(query)] # List comprehension para obtener las peliculas del ttl
 
+i = 0
 for nodo_pelicula, titulo, anio in peliculas:
-    json_response = search_movie_on_wikidata(titulo, int(anio)) # Busca la pelicula en Wikidata
+    i += 1
+    print(f"Procesando película {i} de {len(peliculas)}")
+    print(f"Enriqueciendo {titulo}. Estrenada el año {anio}...")
+    print(f"Tiempo transcurrido: {round((time.time() - start_time)/60, 2)} minutos")
+    try: # Hay peliculas con años que no son números, por lo que se intenta convertir a entero
+        anio_int = int(anio)
+    except ValueError:
+        print(f"Advertencia: Año inválido '{anio}' para la película {titulo}. Saltando.")
+        continue  # Saltamos la pelicula
+
+    json_response = search_movie_on_wikidata(titulo, int(anio_int)) # Busca la pelicula en Wikidata
 
     # Itera sobre las entradas de la respuesta JSON
     for response_entry in json_response['results']['bindings']:
@@ -48,6 +61,6 @@ for nodo_pelicula, titulo, anio in peliculas:
             #production_company = search_URI_value(production_company_URI.split('/')[-1])
             g.add((movie_node, EX["productionCompany"], production_company))
 
-        time.sleep(1) # Espera 1 segundo para no saturar el servidor y que (ojalá) no nos bloqueen
-
-g.serialize('enriched_imdb.ttl', format="turtle")
+    g.serialize('enriched_imdb.ttl', format="turtle")
+    print(f"{titulo} enriquecida con éxito.\n")
+    time.sleep(2) # Espera 2 segundo para no saturar el servidor y que (ojalá) no nos bloqueen

@@ -15,11 +15,13 @@ def search_movie_on_wikidata(title, year):
             rdfs:label ?label ;
             wdt:P345 ?imdb_id .
 
-    OPTIONAL { ?movie wdt:P2130 ?capital_cost }
-    OPTIONAL { ?movie wdt:P840 ?narrative_location }
-    OPTIONAL { ?movie wdt:P272 ?production_company }
-    OPTIONAL { ?narrative_location rdfs:label ?narrative_location_label . FILTER(lang(?narrative_location_label) = "en") }
-    OPTIONAL { ?production_company rdfs:label ?production_company_label . FILTER(lang(?production_company_label) = "en") }
+    OPTIONAL { ?movie wdt:P2130 ?capital_cost .}
+    OPTIONAL { ?movie wdt:P840 ?narrative_location .
+               ?narrative_location rdfs:label ?narrative_location_label . 
+               FILTER(lang(?narrative_location_label) = "en") }
+    OPTIONAL { ?movie wdt:P272? ?production_company .
+               ?production_company rdfs:label ?production_company_label . 
+               FILTER(lang(?production_company_label) = "en") }
 
     FILTER((lang(?label) = "en") && (lcase(str(?title)) = "%s"))
     FILTER(YEAR(?release_date) = %d)
