@@ -52,13 +52,11 @@ for nodo_pelicula, titulo, anio in peliculas:
         # Narrative location
         if 'narrative_location_label' in response_entry:
             narrative_location = Literal(response_entry['narrative_location_label']['value'])
-            #narrative_location = search_URI_value(narrative_location_URI.split('/')[-1])
             g.add((movie_node, EX["narrativeLocation"], narrative_location))
 
         # Production company
         if 'production_company_label' in response_entry:
             production_company = Literal(response_entry['production_company_label']['value'])
-            #production_company = search_URI_value(production_company_URI.split('/')[-1])
             g.add((movie_node, EX["productionCompany"], production_company))
 
     g.serialize('enriched_imdb.ttl', format="turtle")
