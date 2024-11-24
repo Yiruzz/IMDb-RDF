@@ -1,12 +1,9 @@
 import requests
 
-seq = ["follows", "followed by"]
-
 url = "https://query.wikidata.org/sparql"
 
 def search_movie_on_wikidata(title, year):
-    # Define la consulta SPARQL con el título y el año de la película
-    #SELECT ?movie ?movieLabel ?imdb_id ?directorLabel ?actorLabel WHERE {
+    # Consulta SPARQL para buscar una película en Wikidata
     query = """
     SELECT DISTINCT ?movie ?imdb_id ?capital_cost ?narrative_location_label ?production_company_label WHERE {
     ?movie wdt:P31 wd:Q11424 ;
@@ -38,5 +35,5 @@ def search_movie_on_wikidata(title, year):
         print(f"Error: {response.status_code}")
         print(response.text)
 
-# Example of Usage:
+# Ejemplo de uso:
 # search_movie_on_wikidata("The Shawshank Redemption", 1994)
