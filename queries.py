@@ -82,7 +82,7 @@ WHERE {
          ex:releaseYear ?releaseYear .
 }
 GROUP BY ?releaseYear
-ORDER BY DESC(?movieCount)
+ORDER BY DESC(?releaseYear)
 """
 q6 = ("El conteo de películas por año de estreno", query_6)
 
