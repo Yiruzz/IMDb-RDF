@@ -43,6 +43,8 @@ This will execute the queries specified in the `queries.py` file and print the r
 - `imdb_rdf.py`: Python script used to enrich the `cleaned_imdb.ttl` file with [Wikidata](https://query.wikidata.org/sparql) movies data using **SPARQL**. The query used is defined in the `wikidata_sparql_movies.py` file.
 - `queries.py`: Python script containing the queries executed to `enriched_imdb_rdf.ttl` file.
 
+Also you should note that the comments on the code are written in *spanish*.
+
 ## Methodology
 
 The methodology used to transform the IMDb top 1000 movies dataset into RDF format is the following:
